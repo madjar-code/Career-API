@@ -1,0 +1,6 @@
+venv/
+__pycache__
+.env
+Функции работы с графом.py
+db.sqlite3
+request.log
