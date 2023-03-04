@@ -63,7 +63,6 @@ class BaseModel(UUIDModel, TimeStampModel, SoftDeletionModel):
     """
     Base model for inheritance
     """
-
     class Meta:
         abstract = True
 
