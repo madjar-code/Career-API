@@ -9,8 +9,8 @@ class NodeType(models.IntegerChoices):
 
 class Node(BaseModel):
     name = models.CharField(max_length=255)
-    type = models.SmallIntegerField(
-        default=NodeType.EDU,
+    node_type = models.SmallIntegerField(
+        default=NodeType.JOB,
         choices=NodeType.choices
     )
     counter = models.PositiveIntegerField()

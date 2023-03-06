@@ -4,3 +4,4 @@ __pycache__
 Функции работы с графом.py
 db.sqlite3
 request.log
+todo.txt
