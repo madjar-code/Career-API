@@ -1,4 +1,3 @@
-# проверка
 import os
 import sys
 
