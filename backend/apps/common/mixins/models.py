@@ -7,10 +7,7 @@ class SoftDeletionModel(models.Model):
     """
     Abstract model with soft deletion
     """
-    is_active = models.BooleanField(
-        default=True,
-        verbose_name='Активность'
-    )
+    is_active = models.BooleanField(default=True)
 
     objects = models.Manager()
     active_objects = SoftDeletionManager()
@@ -47,19 +44,19 @@ class TimeStampModel(models.Model):
     Abstract model with timestamp
     """
     created_at = models.DateTimeField(
-        auto_now=True, null=True,
-        verbose_name='Дата создания'
+        auto_now=True, null=True
     )
     updated_at = models.DateTimeField(
         auto_now_add=True, null=True,
-        verbose_name='Дата последнего редактирования'
     )
 
     class Meta:
         abstract = True
 
 
-class BaseModel(UUIDModel, TimeStampModel, SoftDeletionModel):
+class BaseModel(UUIDModel,
+                TimeStampModel,
+                SoftDeletionModel):
     """
     Base model for inheritance
     """

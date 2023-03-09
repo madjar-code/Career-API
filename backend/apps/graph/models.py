@@ -8,6 +8,7 @@ class NodeType(models.IntegerChoices):
 
 
 class Node(BaseModel):
+    code = models.IntegerField('Временный код', blank=True, null=True)
     name = models.CharField(max_length=255)
     node_type = models.SmallIntegerField(
         default=NodeType.JOB,
@@ -15,7 +16,7 @@ class Node(BaseModel):
     )
     counter = models.PositiveIntegerField()
 
-    def str(self) -> str:
+    def __str__(self) -> str:
         return self.name
 
 
@@ -34,5 +35,5 @@ class Growth(BaseModel):
         decimal_places=2
     )
 
-    def str(self) -> str:
+    def __str__(self) -> str:
         return f'From {self.start_node} to {self.end_node}'
