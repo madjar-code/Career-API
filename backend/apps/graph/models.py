@@ -8,6 +8,9 @@ class NodeType(models.IntegerChoices):
 
 
 class Node(BaseModel):
+    SHORT_NAME_LENGTH = 50
+    MIDDLE_NAME_LENGTH = 65
+
     code = models.IntegerField('Временный код', blank=True, null=True)
     name = models.CharField(max_length=255)
     node_type = models.SmallIntegerField(
@@ -16,8 +19,20 @@ class Node(BaseModel):
     )
     counter = models.PositiveIntegerField()
 
+    @property
+    def middle_name(self) -> str:
+        name = self.name
+        max_length = Node.MIDDLE_NAME_LENGTH
+        return name if len(name) < max_length else name[:max_length] + '...'
+
+    @property
+    def short_name(self) -> str:
+        name = self.name
+        max_length = Node.SHORT_NAME_LENGTH
+        return name if len(name) < max_length else name[:max_length] + '...'
+
     def __str__(self) -> str:
-        return self.name
+        return self.short_name
 
 
 class Growth(BaseModel):
