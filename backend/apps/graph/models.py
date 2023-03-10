@@ -1,5 +1,6 @@
 from django.db import models
-from common.mixins.models import BaseModel
+from common.mixins.models import\
+    BaseModel, SoftDeletionModel, TimeStampModel
 
 
 class NodeType(models.IntegerChoices):
@@ -7,17 +8,18 @@ class NodeType(models.IntegerChoices):
     JOB = 10, 'Job'
 
 
-class Node(BaseModel):
+class Node(SoftDeletionModel, TimeStampModel):
     SHORT_NAME_LENGTH = 50
     MIDDLE_NAME_LENGTH = 65
 
-    code = models.IntegerField('Временный код', blank=True, null=True)
     name = models.CharField(max_length=255)
     node_type = models.SmallIntegerField(
         default=NodeType.JOB,
         choices=NodeType.choices
     )
     counter = models.PositiveIntegerField()
+    code = models.IntegerField(
+        blank=True, null=True)
 
     @property
     def middle_name(self) -> str:
