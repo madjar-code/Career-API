@@ -9,6 +9,7 @@ class NodeAdmin(admin.ModelAdmin):
         '-created_at',
     )
     list_display = (
+        'id',
         'middle_name',
         'node_type',
         'counter',
