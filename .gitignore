@@ -5,3 +5,5 @@ __pycache__
 db.sqlite3
 request.log
 todo.txt
+main_graph.html
+from_A_to_B.html

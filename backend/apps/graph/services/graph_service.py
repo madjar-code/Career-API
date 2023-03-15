@@ -1,4 +1,3 @@
-import sqlite3
 import networkx as nx
 from pyvis.network import Network
 from graph.models import Node, Growth
@@ -48,29 +47,17 @@ class GraphService2:
     def build_route_AB(self, node_id_1: int, node_id_2: int) -> str:
         result_subgraph = nx.DiGraph()
 
-        try:
-            nodes = nx.shortest_path(self.nx_graph, node_id_1, node_id_2)
-            result_subgraph.add_nodes_from(nodes)
+        nodes = nx.shortest_path(self.nx_graph, node_id_1, node_id_2)
+        result_subgraph.add_nodes_from(nodes)
+        list_of_node_ids = list(result_subgraph)
+        for node_id in result_subgraph.nodes:
+            result_subgraph.nodes[node_id]['label'] = self.nx_graph.nodes[node_id]['label']
+            result_subgraph.nodes[node_id]['color'] = JOB_COLOR    # JOB_COLOR is 'green'
 
-            for node_id in result_subgraph.nodes:
-                result_subgraph.nodes[node_id]['label'] = self.nx_graph.nodes[node_id]['label']
-                result_subgraph.nodes[node_id]['color'] = JOB_COLOR    # JOB_COLOR is 'green'
+        for i in range(1, len(list_of_node_ids)):
+            result_subgraph.add_edge(list_of_node_ids[i-1], list_of_node_ids[i])
 
-            list_of_node_ids = list(result_subgraph)
-            for i in range(1, len(list_of_node_ids)):
-                result_subgraph.add_edge(list_of_node_ids[i-1], list_of_node_ids[i])
-
-        except nx.NetworkXNoPath:
-            return 'No path'
-
-        except nx.NodeNotFound:
-            return 'None of the nodes'
-
-        network = Network(height='900px', notebook=True, directed=True)
-        network.from_nx(result_subgraph)
-        network.show('from_A_to_B.html')
-
-        return 'OK'
+        return 'OK', list_of_node_ids
 
     def build_route_A(self, node_id_1: int) -> str:
         """

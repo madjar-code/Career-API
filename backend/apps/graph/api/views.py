@@ -1,3 +1,4 @@
+import networkx as nx
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -45,8 +46,25 @@ def get_builded_route_AB(request: Request,
     prof_edu_id_2
     """
     global graph_service
-    data = graph_service.build_route_AB(prof_edu_id_1, prof_edu_id_2)
-    return Response({'message': str(data)}, status.HTTP_200_OK)
+    id_name_dict = dict()
+    try:
+        message, list_of_node_ids =\
+            graph_service.build_route_AB(prof_edu_id_1, prof_edu_id_2)
+        for node_id in list_of_node_ids:
+            name = Node.active_objects.get(id=node_id).name
+            id_name_dict[node_id] = name
+    except nx.NetworkXNoPath:
+        message = 'No path'
+        list_of_node_ids = []
+    except nx.NodeNotFound:
+        message = 'None of the nodes'
+        list_of_node_ids = []
+    response_info = {
+        'message': message,
+        'list_of_node_ids': list_of_node_ids,
+        'id_name_dict': id_name_dict,
+    }
+    return Response(response_info, status.HTTP_200_OK)
 
 
 @swagger_auto_schema(method='GET', operation_id='route_by')
